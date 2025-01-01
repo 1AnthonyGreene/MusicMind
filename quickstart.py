@@ -1,4 +1,5 @@
 import os
+import azureStorage
 from azure.ai.vision.imageanalysis import ImageAnalysisClient
 from azure.ai.vision.imageanalysis.models import VisualFeatures
 from azure.core.credentials import AzureKeyCredential
@@ -68,7 +69,10 @@ def main():
         print("Missing environment variable 'VISION_ENDPOINT' or 'VISION_KEY'")
         print("Set them before running this sample.")
         exit()
-    image_urls = ["https://raw.githubusercontent.com/Azure-Samples/cognitive-services-sample-data-files/master/ComputerVision/Images/landmark.jpg"]
+    image_urls = []
+    storage = azureStorage()
+
+    print(storage.get_upload_images("static\files"))
     
     """folder_path = "static/files"
     for root, dirs, files in os.walk(folder_path): 
