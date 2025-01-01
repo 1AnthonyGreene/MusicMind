@@ -1,0 +1,37 @@
+/* Basic Reset */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Header Styling */
+header {
+    background-color: #6200ea;
+    color: white;
+    padding: 10px 0;
+}
+
+/* Button Styling */
+button {
+    background-color: #03dac5;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #018786;
+    color: white;
+}
+
+/* Message Styling */
+p {
+    margin-top: 20px;
+    font-size: 18px;
+}

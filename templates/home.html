@@ -1,0 +1,20 @@
+ <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" contnet=""width=device-width, initial-scale="1.0">
+        <title>Music Mind Frontend</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="frontendScript.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>Music Mind</h1>
+        </header>
+        <form method='POST' enctype='multipart/form-data'>
+            {{form.hidden_tag()}}
+            {{form.file()}}
+            {{form.submit()}}
+        </form>
+    </body>
+</html>
