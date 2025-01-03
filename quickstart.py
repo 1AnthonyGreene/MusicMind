@@ -1,5 +1,5 @@
 import os
-import azureStorage
+from azureStorage import get_upload_images
 from azure.ai.vision.imageanalysis import ImageAnalysisClient
 from azure.ai.vision.imageanalysis.models import VisualFeatures
 from azure.core.credentials import AzureKeyCredential
@@ -70,10 +70,9 @@ def main():
         print("Set them before running this sample.")
         exit()
     image_urls = []
-    storage = azureStorage()
+    folder_path = "static/files"
+    image_urls = get_upload_images(folder_path)
 
-    print(storage.get_upload_images("static\files"))
-    
     """folder_path = "static/files"
     for root, dirs, files in os.walk(folder_path): 
         for file in files:

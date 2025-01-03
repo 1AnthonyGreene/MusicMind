@@ -2,10 +2,6 @@ from azure.storage.blob import BlobServiceClient, ContentSettings
 import os
 
 # Environment variables for Azure connection string and container name
-CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
-CONTAINER_NAME = os.getenv("AZURE_STORAGE_CONTAINER_NAME")
-uploaded_urls = []
-test_list = ["This", "is", "test", ":)"]
 
 def get_type(file):
     if ".jpeg" or ".jpg" in file:
@@ -21,6 +17,10 @@ def get_type(file):
     
 
 def get_upload_images(folder_path):
+    CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+    CONTAINER_NAME = os.getenv("AZURE_STORAGE_CONTAINER_NAME")
+    uploaded_urls = []
+
     # Initialize the BlobServiceClient
     blob_service_client = BlobServiceClient.from_connection_string(CONNECTION_STRING)
     blob_service_client.get_container_client
@@ -41,11 +41,9 @@ def get_upload_images(folder_path):
 
                 uploaded_urls.append(blob_client.url)
 
-                print(f"Uploaded: {blob_name} URL: {blob_client.url}")
             except Exception as e:
                 print(f"Failed to upload {file_path}: {e}")
-    print(uploaded_urls)
-    return test_list
+    return uploaded_urls
 
 # Example usage
 if __name__ == "__main__":
