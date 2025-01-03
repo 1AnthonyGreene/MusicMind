@@ -5,3 +5,4 @@ Azure-ai-vision-imageanalysis == 1.0.0
 Azure-core == 1.32.0
 Azure-storage-blob == 12.24.0
 WTForms == 3.2.1
+openai==1.58.1
