@@ -2,12 +2,12 @@ import os
 from openai import AzureOpenAI
 import quickstart
 
-def main(genre, artist):
+def main(genre, artist, image_url):
   vision = quickstart
-  visionResult = quickstart.main()
+  visionResult = vision.main(image_url)
 
-  tags = quickstart.add_tags()
-  captions = quickstart.add_caption()
+  tags = vision.add_tags(visionResult)
+  captions = vision.add_caption(visionResult)
 
   tags_string = ", ".join(tags)
   print("Tags: " + tags_string + "\n")

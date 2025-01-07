@@ -61,7 +61,7 @@ class ImageAnalyzer:
 
 
 # Main code execution
-def main():
+def main(image_url):
     try:
         endpoint = os.environ["VISION_ENDPOINT"]
         key = os.environ["VISION_KEY"]
@@ -71,7 +71,7 @@ def main():
         exit()
     image_urls = []
     folder_path = "static/files"
-    image_urls = get_upload_images(folder_path)
+    
 
     """folder_path = "static/files"
     for root, dirs, files in os.walk(folder_path): 
@@ -106,23 +106,21 @@ def main():
     return results
 
   
-def add_caption():
-    mainResults = main()
+def add_caption(results):
     captions = []
     try:
-        if mainResults.caption is not None:
-                    captions.append(mainResults.caption.text)
+        if results.caption is not None:
+                    captions.append(results.caption.text)
         else:
                     print("No caption detected")
     except:
         pass
     return captions
 
-def add_tags():
-    mainResults = main()
+def add_tags(results):
     tags = []
     try:
-        for result in mainResults:
+        for result in results:
             if 'tagsResult' in result and 'values' in result['tagsResult']:
                 for tag in result['tagsResult']['values']:
                     # Check if the tag has the expected attributes
