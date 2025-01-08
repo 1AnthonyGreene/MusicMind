@@ -61,7 +61,7 @@ class ImageAnalyzer:
 
 
 # Main code execution
-def main():
+def main(image_urls):
     try:
         endpoint = os.environ["VISION_ENDPOINT"]
         key = os.environ["VISION_KEY"]
@@ -69,9 +69,8 @@ def main():
         print("Missing environment variable 'VISION_ENDPOINT' or 'VISION_KEY'")
         print("Set them before running this sample.")
         exit()
-    image_urls = []
-    folder_path = "static/files"
-    image_urls = get_upload_images(folder_path)
+  
+    #image_urls = get_upload_images(folder_path)
 
     """folder_path = "static/files"
     for root, dirs, files in os.walk(folder_path): 
@@ -106,8 +105,7 @@ def main():
     return results
 
   
-def add_caption():
-    mainResults = main()
+def add_caption(mainResults):
     captions = []
     try:
         if mainResults.caption is not None:
@@ -118,8 +116,7 @@ def add_caption():
         pass
     return captions
 
-def add_tags():
-    mainResults = main()
+def add_tags(mainResults):
     tags = []
     try:
         for result in mainResults:
@@ -140,5 +137,3 @@ def add_tags():
 
 
 
-if __name__ == "__main__":
-    main()

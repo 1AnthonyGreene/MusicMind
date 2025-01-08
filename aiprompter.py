@@ -2,12 +2,12 @@ import os
 from openai import AzureOpenAI
 import quickstart
 
-def main(genre, artist):
+def main(genre, artist, image_urls):
   vision = quickstart
-  visionResult = quickstart.main()
+  visionResult = vision.main(image_urls)
 
-  tags = quickstart.add_tags()
-  captions = quickstart.add_caption()
+  tags = quickstart.add_tags(visionResult)
+  captions = quickstart.add_caption(visionResult)
 
   tags_string = ", ".join(tags)
   print("Tags: " + tags_string + "\n")
@@ -36,8 +36,3 @@ def main(genre, artist):
   print(response.choices[0].message.content)
   return(response.choices[0].message.content)
 
-
-if __name__ == "__main__":
-    genre = "Pop"
-    artist = "SZA"
-    main(genre, artist)
