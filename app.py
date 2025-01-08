@@ -8,7 +8,7 @@ import aiprompter
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
-app.config['UPLOAD_FOLDER'] = os.path.join(os.environ.get('HOME', '.'), 'site', 'wwwroot', 'static', 'files')
+app.config['UPLOAD_FOLDER'] = os.path.join(os.environ.get('HOME', 'D:\\home'), 'uploads')
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
@@ -26,12 +26,14 @@ def home():
     if form.validate_on_submit():
         genre = form.genre.data
         artist = form.artist.data
-        file = form.file
-        file_data = file.data
-        filename = secure_filename(file.name)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file_data.save(file_path)
-        folder_path = app.config['UPLOAD_FOLDER']
+        file = form.file.data
+        if file:
+            filename = secure_filename(file.name)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            folder_path = app.config['UPLOAD_FOLDER']
+        else:
+            return jsonify({"error": "No file uploaded"}), 400
 
         image_urls = get_upload_images(folder_path)
 
