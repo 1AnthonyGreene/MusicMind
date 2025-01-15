@@ -75,4 +75,10 @@ jobs:
         with:
           app-name: 'MusicMindWebApp'
           slot-name: 'Production'
-          
+
+      - name: List and Delete All Deployments
+        run: |
+          for deployment_id in $(az webapp deployment list --name MusicMindWebApp --resource-group MusicMind --query "[].id" --output tsv)
+          do
+            az webapp deployment delete --name MusicMindWebApp --resource-group MusicMind --deployment-id $deployment_id
+          done
