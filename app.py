@@ -8,7 +8,7 @@ import aiprompter
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
-app.config['UPLOAD_FOLDER'] = os.path.join(os.environ.get('HOME', 'D:\\home'), 'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(os.environ.get('HOME', 'C:\\'), 'uploads')
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
@@ -27,11 +27,8 @@ def home():
         genre = form.genre.data
         artist = form.artist.data
         files = form.files.data
+        """
         for file in files:
-            if file.content_length == 0:
-                abort(400, "File is empty.")
-            if file.content_length > 20 * 1024 * 1024:  # 20 MB
-                abort(400, "File exceeds the 20 MB size limit.")
             if file:
                 filename = secure_filename(file.filename)
                 file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -42,8 +39,9 @@ def home():
                 folder_path = app.config['UPLOAD_FOLDER']
             else:
                 return jsonify({"error": "No file uploaded"}), 400
+                """
 
-        image_urls = get_upload_images(folder_path)
+        image_urls = get_upload_images(files)
 
         return jsonify({"Result": aiprompter.main(genre, artist, image_urls)})
     return render_template('home.html', form=form)
