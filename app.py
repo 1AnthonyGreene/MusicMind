@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, abort
 from flask_wtf import FlaskForm
 from wtforms import StringField, MultipleFileField, SubmitField
 from werkzeug.utils import secure_filename
@@ -28,6 +28,10 @@ def home():
         artist = form.artist.data
         files = form.files.data
         for file in files:
+            if file.content_length == 0:
+                abort(400, "File is empty.")
+            if file.content_length > 20 * 1024 * 1024:  # 20 MB
+                abort(400, "File exceeds the 20 MB size limit.")
             if file:
                 filename = secure_filename(file.filename)
                 file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
