@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 from flask_wtf import FlaskForm
-from wtforms import StringField, FileField, SubmitField
+from wtforms import StringField, MultipleFileField, SubmitField
 from werkzeug.utils import secure_filename
 from azureStorage import get_upload_images
 import os
@@ -16,7 +16,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 class UploadFileForm(FlaskForm):
     genre = StringField("Genre")  # Correct usage
     artist = StringField("Artist")  # Correct usage
-    file = FileField("File")
+    files = MultipleFileField("File")
     submit = SubmitField("Upload File")
 
 @app.route('/', methods=['GET', "POST"])
@@ -26,14 +26,18 @@ def home():
     if form.validate_on_submit():
         genre = form.genre.data
         artist = form.artist.data
-        file = form.file.data
-        if file:
-            filename = secure_filename(file.name)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            folder_path = app.config['UPLOAD_FOLDER']
-        else:
-            return jsonify({"error": "No file uploaded"}), 400
+        files = form.files.data
+        for file in files:
+            if file:
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                folder_path = app.config['UPLOAD_FOLDER']
+                # Save the file
+                file.save(file_path)
+                folder_path = app.config['UPLOAD_FOLDER']
+            else:
+                return jsonify({"error": "No file uploaded"}), 400
 
         image_urls = get_upload_images(folder_path)
 
