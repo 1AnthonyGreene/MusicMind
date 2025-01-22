@@ -14,7 +14,7 @@ def main():
     sql_password = os.getenv("Azure_Sql_Password")
     server = "musicmindserver.database.windows.net"
     database = "MM Sql"
-    redirect_url = "http://localhost:8888/callback"
+    redirect_url = "https://musicmindwebapp-ctdncyfca8fzhsaf.eastus2-01.azurewebsites.net/"
     user_tracks = []
 
     scope = 'user-top-read'
