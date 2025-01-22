@@ -7,10 +7,11 @@ import os
 import aiprompter
 import spotipy
 import subprocess
+import spotify
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
-app.config['UPLOAD_FOLDER'] = os.path.join(os.environ.get('HOME', 'D:\\home'), 'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(os.environ.get('HOME', 'C:\\'), 'uploads')
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
@@ -62,12 +63,9 @@ def spoitfy():
             files = form.files.data
             personalization = "spotify"
             image_urls = get_upload_images(files)
-            result = subprocess.run(["python", "spotify.py"], capture_output= True, text = True)
-            user_tracks = result.stdout.strip()
+            user_tracks = spotify.main()
+            print(user_tracks)
             return jsonify({
-            "Output": result.stdout,
-            "Error": result.stderr,
-            "Status": 'success' if result.returncode == 0 else 'error',
             "Result": aiprompter.main(genre, artist, image_urls, personalization, user_tracks)})
         else:
             print("No file submited")

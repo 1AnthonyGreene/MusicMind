@@ -87,8 +87,8 @@ def main():
     cursor.execute("SELECT * FROM UserTracks WHERE UserId = %s", UserID)
     results = cursor.fetchall()
     for result in results:
-         trackName = result[0]
-         artist = result [1]
+         trackName = result[2]
+         artist = result [3]
          user_tracks.append(trackName + " by " + artist )
     conn.commit()
     cursor.close()

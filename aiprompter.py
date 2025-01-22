@@ -5,7 +5,6 @@ import pymssql
 
 def main(genre, artist, image_urls, personalization, user_tracks):
   print("Personalization: " + personalization)
-  print("User Tracks: " + user_tracks )
   vision = quickstart
   visionResult = vision.main(image_urls)
 
