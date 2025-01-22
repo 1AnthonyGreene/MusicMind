@@ -6,3 +6,5 @@ Azure-core == 1.32.0
 Azure-storage-blob == 12.24.0
 WTForms == 3.2.1
 openai==1.58.1
+pymssql==2.3.2
+spotipy ==2.25.0
