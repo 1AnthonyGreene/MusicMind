@@ -3,6 +3,7 @@ import pymssql
 import datetime
 import os
 import spotipy
+from azure.identity import DefaultAzureCredential
 
 
 from spotipy.oauth2 import SpotifyOAuth
@@ -12,9 +13,12 @@ def main():
     client_secret = os.getenv("Spotify_secret")
     sql_username = os.getenv("Azure_Sql_Username")
     sql_password = os.getenv("Azure_Sql_Password")
-    server = "musicmindserver.database.windows.net"
-    database = "MM Sql"
+    server = "mmwasrv.database.windows.net"
+    database = "MM_SQL _v2 "
+    crednetial = DefaultAzureCredential()
+    token = crednetial.get_token("https://database.windows.net/.default")
     redirect_url = "https://musicmindwebapp-ctdncyfca8fzhsaf.eastus2-01.azurewebsites.net/"
+    driver = "ODBC Driver 18 for SQL Server"
     user_tracks = []
 
     scope = 'user-top-read'
@@ -29,10 +33,13 @@ def main():
 
     #Connect to Azure SQL5
     conn = pymssql.connect(
-    server = server,
-    user = sql_username, 
+    server=server,
+    user=sql_username,
     password=sql_password,
-    database = database
+    database=database,
+    port="1433",
+    charset="UTF-8",
+    autocommit=True
     )
 
     cursor = conn.cursor()
@@ -64,7 +71,7 @@ def main():
         print(f"Time Range: {sp_range.capitalize()}")
         try:
             topTrack = sp.current_user_top_tracks(time_range=sp_range, limit=50)
-            topArtist = sp.current_user_top_artists(time_range=sp_range, limit=50)
+            #topArtist = sp.current_user_top_artists(time_range=sp_range, limit=50)
             items = topTrack.get('items', [])
             if not items:
                 print("No top tracks found for this range.\n")
@@ -79,6 +86,7 @@ def main():
 
                         #print(f"{i + 1}. {track_name} // {artist_name}")
                     except Exception as e:
+                        print(e)
                         continue
         except Exception as e:
                 print(f"An error occurred while fetching top tracks for {sp_range}: {e}")
@@ -93,5 +101,7 @@ def main():
     conn.commit()
     cursor.close()
     conn.close()
+    print (user_tracks)
     return user_tracks
 
+main()
