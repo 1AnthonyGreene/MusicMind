@@ -3,7 +3,6 @@ import pymssql
 import datetime
 import os
 import spotipy
-from azure.identity import DefaultAzureCredential
 
 
 from spotipy.oauth2 import SpotifyOAuth
@@ -15,8 +14,7 @@ def main():
     sql_password = os.getenv("Azure_Sql_Password")
     server = "mmwasrv.database.windows.net"
     database = "MM_SQL _v2 "
-    crednetial = DefaultAzureCredential()
-    token = crednetial.get_token("https://database.windows.net/.default")
+   
     redirect_url = "https://musicmindwebapp-ctdncyfca8fzhsaf.eastus2-01.azurewebsites.net/"
     driver = "ODBC Driver 18 for SQL Server"
     user_tracks = []
