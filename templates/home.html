@@ -1,26 +1,24 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" contnet=""width=device-width, initial-scale="1.0">
-        <title>Music Mind Frontend</title>
-        <link rel="stylesheet" href="style.css">
-        <script src="frontendScript.js"></script>
-    </head>
-    <body>
-        <header>
-            <h1>Music Mind</h1>
-        </header>
-       
-        <form method='POST' enctype='multipart/form-data'>
-            {{form.hidden_tag()}}
-           <label for ="Genre:"{{form.genre.label()}}></label>
-           {{form.genre(id="genre")}}
-            <label for = "Artist:">{{form.artist.label()}}</label>
-            {{form.artist(id="artist")}}
-
-            {{form.files()}}
-            {{form.submit()}}
-        </form>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+</head>
+<body>
+    <h1>Welcome to the Music Mind</h1>
+    <p>Please choose how you want to proceed:</p>
+    <div>
+        <a href="/spotify">
+            <button style="padding: 10px 20px; background-color: #1DB954; color: white; border: none; cursor: pointer;">
+                Login with Spotify
+            </button>
+        </a>
+        <a href="/guest">
+            <button style="padding: 10px 20px; background-color: #ccc; color: black; border: none; cursor: pointer;">
+                Continue as Guest
+            </button>
+        </a>
+    </div>
+</body>
 </html>

@@ -5,10 +5,13 @@ from werkzeug.utils import secure_filename
 from azureStorage import get_upload_images
 import os
 import aiprompter
+import spotipy
+import subprocess
+import spotify
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
-app.config['UPLOAD_FOLDER'] = os.path.join(os.environ.get('HOME', 'D:\\home'), 'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(os.environ.get('HOME', 'C:\\'), 'uploads')
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
@@ -22,16 +25,19 @@ class UploadFileForm(FlaskForm):
 @app.route('/', methods=['GET', "POST"])
 @app.route('/home', methods=['GET', "POST"])
 def home():
+    return render_template("home.html")
+
+@app.route('/guest', methods=['GET', "POST"])
+def guest():
     form = UploadFileForm()
+    personalization = "none"
     if form.validate_on_submit():
         genre = form.genre.data
         artist = form.artist.data
         files = form.files.data
+        user_tracks = "none"
+        """
         for file in files:
-            if file.content_length == 0:
-                abort(400, "File is empty.")
-            if file.content_length > 20 * 1024 * 1024:  # 20 MB
-                abort(400, "File exceeds the 20 MB size limit.")
             if file:
                 filename = secure_filename(file.filename)
                 file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -42,11 +48,35 @@ def home():
                 folder_path = app.config['UPLOAD_FOLDER']
             else:
                 return jsonify({"error": "No file uploaded"}), 400
+                """
+        image_urls = get_upload_images(files)
+        return jsonify({"Result": aiprompter.main(genre, artist, image_urls, personalization, user_tracks)})
+    return render_template('guest.html', form=form)
 
-        image_urls = get_upload_images(folder_path)
+@app.route("/spotify", methods=["GET", "Post"])
+def spoitfy():
+    try:
+        form = UploadFileForm()
+        if form.validate_on_submit():
+            genre = "none"
+            artist = "none"
+            files = form.files.data
+            personalization = "spotify"
+            image_urls = get_upload_images(files)
+            user_tracks = spotify.main()
+            print(user_tracks)
+            return jsonify({
+            "Result": aiprompter.main(genre, artist, image_urls, personalization, user_tracks)})
+        else:
+            print("No file submited")
+    except Exception as e:
+        return jsonify({'error': str(e), 'status': 'error'})
+    return render_template('spotify.html', form=form)
 
-        return jsonify({"Result": aiprompter.main(genre, artist, image_urls)})
-    return render_template('home.html', form=form)
 
+
+
+
+    
 if __name__ == '__main__':
     app.run()
