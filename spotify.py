@@ -12,8 +12,8 @@ def main():
     client_secret = os.getenv("Spotify_secret")
     sql_username = os.getenv("Azure_Sql_Username")
     sql_password = os.getenv("Azure_Sql_Password")
-    server = "mmwasrv.database.windows.net"
-    database = "MM_SQL _v2 "
+    server = "servermind.database.windows.net"
+    database = "sqlmindy"
    
     redirect_url = "https://musicmindwebapp-ctdncyfca8fzhsaf.eastus2-01.azurewebsites.net/"
     driver = "ODBC Driver 18 for SQL Server"
