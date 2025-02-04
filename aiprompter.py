@@ -1,7 +1,6 @@
 import os
 from openai import AzureOpenAI
 import quickstart
-import pymssql
 
 def main(genre, artist, image_urls, personalization, user_tracks):
   print("Personalization: " + personalization)
@@ -45,4 +44,3 @@ def main(genre, artist, image_urls, personalization, user_tracks):
 
 def get_user_tracks():
   pass
-
