@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - MyMindApp
+name: Build and deploy Python app to Azure Web App - MusicMindApp
 
 on:
   push:
@@ -68,14 +68,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6DF1B270294B459191D34331D639B930 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_62AA8A7F70504F7DB0CA243EE456BA27 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1E45187D23AD4BE7A4D076346C6F534E }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_8DFDFE89614B4FE9A2A1E8E93AB471FA }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9173CDAE6CFC4ECC8AD1CD6A2F49FE4B }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3C2A63D49C684661B1CC6EA3B0766855 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'MyMindApp'
+          app-name: 'MusicMindApp'
           slot-name: 'Production'
           

@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - MyMindApp
+name: Build and deploy Python app to Azure Web App - MindAppy
 
 on:
   push:
@@ -68,14 +68,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6DF1B270294B459191D34331D639B930 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_62AA8A7F70504F7DB0CA243EE456BA27 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1E45187D23AD4BE7A4D076346C6F534E }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E0FE0185B0424DE8B9543FF564D226B8 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_86EB4588D6DA47A3A2F467969DBD172B }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_018398F16FBD4ED286286D757EE91D8E }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'MyMindApp'
+          app-name: 'MindAppy'
           slot-name: 'Production'
           
