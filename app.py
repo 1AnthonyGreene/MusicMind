@@ -64,7 +64,6 @@ def spoitfy():
             personalization = "spotify"
             image_urls = get_upload_images(files)
             user_tracks = spotify.main()
-            print(user_tracks)
             return jsonify({
             "Result": aiprompter.main(genre, artist, image_urls, personalization, user_tracks)})
         else:
@@ -73,10 +72,5 @@ def spoitfy():
         return jsonify({'error': str(e), 'status': 'error'})
     return render_template('spotify.html', form=form)
 
-
-
-
-
-    
 if __name__ == '__main__':
     app.run()

@@ -15,7 +15,7 @@ def main():
     server = "servermind.database.windows.net"
     database = "sqlmindy"
    
-    redirect_url = "https://musicmindwebapp-ctdncyfca8fzhsaf.eastus2-01.azurewebsites.net/"
+    redirect_url = "mindmind-hge3gkf6achycjd7.eastus2-01.azurewebsites.net/"
     driver = "ODBC Driver 18 for SQL Server"
     user_tracks = []
 
@@ -26,8 +26,6 @@ def main():
                                                     redirect_uri=redirect_url, 
                                                     scope=scope))
                                                     
-
-
 
     #Connect to Azure SQL5
     conn = pymssql.connect(
@@ -80,17 +78,16 @@ def main():
                         trackName = item.get('name', 'Unknown Track')
                         artistName = item['artists'][0]['name'] if item.get('artists') else 'Unknown Artist'
                         cursor.execute("Insert Into Tracks(TrackId, UserId, TrackName, Artist) Values (%s, %s, %s, %s)", (trackId, SPUserId, trackName, artistName))
-                        cursor.execute("Insert Into UserTracks(UserId, TrackId, TrackName, Artist) Values (%s, %s, %s, %s)", (SPUserId, trackId, trackName, artistName))
+                        cursor.execute("Insert Into UserTrack(UserId, TrackId, TrackName, Artist) Values (%s, %s, %s, %s)", (SPUserId, trackId, trackName, artistName))
 
                         #print(f"{i + 1}. {track_name} // {artist_name}")
                     except Exception as e:
-                        print(e)
                         continue
         except Exception as e:
                 print(f"An error occurred while fetching top tracks for {sp_range}: {e}")
         print()
     
-    cursor.execute("SELECT * FROM UserTracks WHERE UserId = %s", UserID)
+    cursor.execute("SELECT * FROM UserTrack WHERE UserId = %s", UserID)
     results = cursor.fetchall()
     for result in results:
          trackName = result[2]
@@ -99,7 +96,6 @@ def main():
     conn.commit()
     cursor.close()
     conn.close()
-    print (user_tracks)
     return user_tracks
 
 main()
