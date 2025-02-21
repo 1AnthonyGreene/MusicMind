@@ -15,7 +15,7 @@ def main():
     server = "servermind.database.windows.net"
     database = "sqlmindy"
    
-    redirect_url = "https://musicmindwebapp-ctdncyfca8fzhsaf.eastus2-01.azurewebsites.net/"
+    redirect_url = "mindmind-hge3gkf6achycjd7.eastus2-01.azurewebsites.net/"
     driver = "ODBC Driver 18 for SQL Server"
     user_tracks = []
 
