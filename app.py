@@ -5,8 +5,7 @@ from werkzeug.utils import secure_filename
 from azureStorage import get_upload_images
 import os
 import aiprompter
-import spotipy
-import subprocess
+
 import spotify
 
 app = Flask(__name__)
