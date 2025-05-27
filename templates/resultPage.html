@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Mind Frontend</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="frontendScript.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Music Mind</h1>
+  </header>
+
+  <main>
+    {% if result %}
+      <div class="result-section">
+        <h2>Prompt Result:</h2>
+        <p>{{ result }}</p>
+        <a href= "{{track_url}}"> Track Link </a>
+        <p>{{image_url}}</p>
+      </div>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}">
+      <button style="padding: 10px 20px; background-color: #1DB954; color: white; border: none; cursor: pointer;">
+      Return to Home
+      </button>
+    </a>
+  </main>
+</body>
+</html>

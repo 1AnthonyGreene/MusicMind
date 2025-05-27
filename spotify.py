@@ -4,6 +4,8 @@ import pymssql
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
+_sp = None
+
 
 def connect_spotify():
     """Authenticate and return a Spotipy client."""
@@ -15,13 +17,15 @@ def connect_spotify():
         raise ValueError("Spotify client ID or secret not set in environment variables.")
 
     scope = 'user-top-read'
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-        client_id=client_id,
-        client_secret=client_secret,
-        redirect_uri=redirect_url,
-        scope=scope
+    global _sp
+    if not _sp: 
+        _sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=client_id,
+            client_secret=client_secret,
+            redirect_uri=redirect_url,
+            scope=scope
     ))
-    return sp
+    return _sp
 
 
 def connect_sql():
@@ -100,6 +104,7 @@ def insert_tracks(cursor, sp, user_id):
     return user_tracks
 
 
+
 def main():
     sp = connect_spotify()
     conn, cursor = connect_sql()
@@ -122,6 +127,32 @@ def main():
         cursor.close()
         conn.close()
 
+
+def get_recommendation_metadata(track, artist):
+    sp = connect_spotify()
+     
+    query = f"track:{track}"
+    if artist:
+        query += f" artist:{artist}"
+
+    results = sp.search(q=query, type="track", limit=1)
+    try: 
+        if results["tracks"]["items"]:
+            track = results["tracks"]["items"][0]
+            #track_name = track["name"]
+            track_url = track["external_urls"]["spotify"]
+            artist_name = track["artists"][0]["name"]
+            image = track["album"]["images"][0]  # You can use [1] or [2] for smaller sizes
+            try: 
+                image_url = image["url"]
+            except:
+                image_url = None
+           
+        else:
+            print("TRACK IS: " + track + "\nARTIST IS: " + artist)
+    except:
+        print(results)
+    return (track, track_url, artist_name, image_url)
 
 if __name__ == "__main__":
     main()

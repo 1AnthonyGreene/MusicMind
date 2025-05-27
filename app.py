@@ -1,12 +1,15 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, session, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, MultipleFileField, SubmitField
 from werkzeug.utils import secure_filename
 import os
+import traceback
 
 from azureStorage import get_upload_images
 import aiprompter
 import spotify
+import resultPage
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
@@ -52,6 +55,8 @@ def guest():
 @app.route("/spotify", methods=["GET", "POST"])
 def spotify_route():  # renamed to avoid conflict with imported module
     form = UploadFileForm()
+    user_tracks = None
+    result = None
     if form.validate_on_submit():
         try:
             genre = "none"
@@ -63,16 +68,32 @@ def spotify_route():  # renamed to avoid conflict with imported module
                 return jsonify({"error": "No files uploaded"}), 400
 
             image_urls = get_upload_images(files)
-            user_tracks = spotify.main()  # returns a list of track strings
+            user_tracks = spotify.main()  # returns a 3 of track strings
 
-            result = aiprompter.main(genre, artist, image_urls, personalization, user_tracks)
-            return jsonify({"Result": result})
-
+            result, track_recommendation, artist= aiprompter.main(genre, artist, image_urls, personalization, user_tracks)
+             
+            track, track_url, artist_name, image_url = spotify.get_recommendation_metadata(track_recommendation, artist)
+            session['result'] = result
+            session['user_tracks'] = user_tracks
+            session['artist'] = artist
+            session['track_url'] = track_url
+            print("TRACK_URL IS: " + track_url)
+            return redirect(url_for('result_page'))
         except Exception as e:
-            return jsonify({'error': str(e), 'status': 'error'}), 500
+            return jsonify({'error': str(e), 'trace': traceback.format_exc(), 'status': 'error'}), 500
 
-    return render_template('spotify.html', form=form)
+    return render_template('spotify.html', form=form,result = result, user_tracks=user_tracks)
 
+@app.route("/result", methods=["GET", "POST"])
+def result_page():
+    artist = session.get('artist')
+    sp = session.get('sp')
+    track_url = session.get('track_url')
+    result = session.get('result')
+    user_tracks = session.get('user_tracks', [])
+    print("Loaded result page with:", result, user_tracks)
+    return render_template('resultPage.html', result=result, user_tracks=user_tracks, track_url = track_url)
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
